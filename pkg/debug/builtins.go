@@ -26,6 +26,7 @@ func writeBuiltins(mergedDir string, ep *podman.EntrypointInfo) {
 
 	writeScript(binDir, "install", installScript)
 	writeScript(binDir, "uninstall", uninstallScript)
+	writeScript(binDir, "clear", clearScript)
 	writeScript(binDir, "builtins", builtinsScript)
 	writeScript(binDir, "entrypoint", entrypointScript)
 
@@ -175,12 +176,17 @@ for pkg in "$@"; do
 done
 `
 
+const clearScript = `#!/nix/var/nix/profiles/default/bin/sh
+printf '\033[2J\033[H'
+`
+
 const builtinsScript = `#!/nix/var/nix/profiles/default/bin/sh
 echo "podman-debug builtin commands:"
 echo ""
 echo "  install <pkg> [pkg...]   Install nix packages (https://search.nixos.org/packages)"
 echo "  uninstall <pkg> [pkg...] Uninstall nix packages"
 echo "  entrypoint               Show, lint, or run the container/image entrypoint"
+echo "  clear                    Clear the terminal screen"
 echo "  builtins                 Show this help"
 `
 
